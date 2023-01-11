@@ -1,5 +1,5 @@
 /**
- * QIX Lines
+ * QIX Lines (Multi-Color)
  */
 
 #include <c64.h>
@@ -11,13 +11,17 @@
 #include <stdlib.h>
 #include <tgi.h>
 
+#include "mcbitmap.h"
+
+#define X_SIZE 160
+#define Y_SIZE 192
 #define MAX_COLORS 16
 #define COLOR_BG TGI_COLOR_BLACK
-#define COLOR_FG TGI_COLOR_WHITE
 #define MAX_SIN 180
 #define HISTORY_SIZE 10                 // how many lines to display at once
-#define STEP 8                         // line spacing
-#define STEP_RANGE 6                    // spacing plus/minus range
+#define STEP 10                         // line spacing
+#define STEP_RANGE 9                    // spacing plus/minus range
+#define QIX_COUNT 3                     // number of qixs to display
 
 // use all colors except black (0)
 #define RANDOM_COLOR() (rand() % (MAX_COLORS - 1) + 1)
@@ -28,19 +32,8 @@ typedef struct {
     int y1;
     int x2;
     int y2;
+    byte color;
 } line_s;
-
-// globals
-static int x_size;
-static int y_size;
-
-void set_color(const unsigned char color) {
-    unsigned char palette[2];
-    palette[0] = COLOR_BG;
-    palette[1] = color;
-    tgi_setpalette(palette);
-    tgi_setcolor(COLOR_FG);
-}
 
 int next_degree(int degree) {
     // add randomly to the degree
@@ -66,42 +59,42 @@ void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
     if (line->x1 < 0) {
         line->x1 = 0 - line->x1;
         line_delta->x1 = -line_delta->x1;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
-    if (line->x1 >= x_size) {
-        line->x1 = x_size - (line->x1 - x_size);
+    if (line->x1 >= X_SIZE) {
+        line->x1 = X_SIZE - (line->x1 - X_SIZE);
         line_delta->x1 = -line_delta->x1;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
     if (line->y1 < 0) {
         line->y1 = 0 - line->y1;
         line_delta->y1 = -line_delta->y1;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
-    if (line->y1 >= y_size) {
-        line->y1 = y_size - (line->y1 - y_size);
+    if (line->y1 >= Y_SIZE) {
+        line->y1 = Y_SIZE - (line->y1 - Y_SIZE);
         line_delta->y1 = -line_delta->y1;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
     if (line->x2 < 0) {
         line->x2 = 0 - line->x2;
         line_delta->x2 = -line_delta->x2;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
-    if (line->x2 >= x_size) {
-        line->x2 = x_size - (line->x2 - x_size);
+    if (line->x2 >= X_SIZE) {
+        line->x2 = X_SIZE - (line->x2 - X_SIZE);
         line_delta->x2 = -line_delta->x2;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
     if (line->y2 < 0) {
         line->y2 = 0 - line->y2;
         line_delta->y2 = -line_delta->y2;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
-    if (line->y2 >= y_size) {
-        line->y2 = y_size - (line->y2 - y_size);
+    if (line->y2 >= Y_SIZE) {
+        line->y2 = Y_SIZE - (line->y2 - Y_SIZE);
         line_delta->y2 = -line_delta->y2;
-        set_color(RANDOM_COLOR());
+        line->color = RANDOM_COLOR();
     }
 }
 
@@ -110,14 +103,12 @@ void draw_lines() {
     line_s line, line_delta, line_degree, line_history[HISTORY_SIZE];
     int history_index;
 
-    // set random color
-    tgi_setcolor(RANDOM_COLOR());
-
     // randomize starting values
-    line.x1 = rand() % x_size;
-    line.y1 = rand() % y_size;
-    line.x2 = rand() % x_size;
-    line.y2 = rand() % y_size;
+    line.x1 = rand() % X_SIZE;
+    line.y1 = rand() % Y_SIZE;
+    line.x2 = rand() % X_SIZE;
+    line.y2 = rand() % Y_SIZE;
+    line.color = RANDOM_COLOR();
 
     line_delta.x1 = STEP;
     line_delta.y1 = STEP;
@@ -136,13 +127,12 @@ void draw_lines() {
         next_line(&line, &line_delta, &line_degree);
 
         // draw line
-        tgi_setcolor(COLOR_FG);
-        tgi_line(line.x1, line.y1, line.x2, line.y2);
+        draw_line(line.x1, line.y1, line.x2, line.y2, line.color);
 
         // remove from history
-        tgi_setcolor(COLOR_BG);
-        tgi_line(line_history[history_index].x1, line_history[history_index].y1,
-                 line_history[history_index].x2, line_history[history_index].y2);
+        draw_line(line_history[history_index].x1, line_history[history_index].y1,
+                  line_history[history_index].x2, line_history[history_index].y2,
+                  COLOR_BG);
 
         // add to history
         line_history[history_index++] = line;
@@ -152,29 +142,24 @@ void draw_lines() {
 }
 
 int main(void) {
-    unsigned char border_color;
+    unsigned char bg_color, border_color;
 
-    // setup tgi
-    tgi_install(tgi_static_stddrv);
-    tgi_init();
-    tgi_clear();
+    // setup multi-color bitmap
+    setup_bitmap_multi();
 
-    // set globals
-    x_size = tgi_getxres();
-    y_size = tgi_getyres();
-
-    // persist border color
+    // persist background and border color
+    bg_color = bgcolor(COLOR_BG);
     border_color = bordercolor(COLOR_BG);
+
+    // clear screen
+    clrscr();
 
     // main loop
     draw_lines();
 
-    // restore border color
+    // restore background and border color
+    bgcolor(bg_color);
     bordercolor(border_color);
-
-    // cleanup tgi
-    tgi_uninstall();
-    clrscr();
 
     return EXIT_SUCCESS;
 }
