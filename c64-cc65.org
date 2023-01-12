@@ -6,54 +6,61 @@
   #+DESCRIPTION: Org/Babel 'Literate' Version of C64 Programs
   #+KEYWORDS: emacs, org-mode, babel, c, cc65, commodore 64, c64, programming language, literate programming, reproducible research
   #+LANGUAGE: en
-  #+PROPERTY: header-args :tangle no :noweb yes :padline yes :comments none :results silent :dir /tmp :mkdirp yes
+  #+PROPERTY: header-args :tangle no :noweb yes :padline yes :comments no :results silent :dir /tmp :mkdirp yes
   #+STARTUP: noindent odd overview
-  #+TIMESTAMP: <2023-01-12 13:31 (kyle)>
+  #+TIMESTAMP: <2023-01-21 14:21 (kyle)>
 
 * Table of Contents
   :PROPERTIES:
-  :TOC: :include all :ignore this
+  :CUSTOM_ID: table-of-contents
+  :TOC:      :include all :ignore this
   :END:
 
   :CONTENTS:
 - [[#constants][Constants]]
-  - [[#author][Author]]
-  - [[#copyright][Copyright]]
-  - [[#header][Header]]
-  - [[#license][License]]
+  - [[#constants-author][Author]]
+  - [[#constants-copyright][Copyright]]
+  - [[#constants-header][Header]]
+  - [[#constants-license-header][License Header]]
 - [[#shared][Shared]]
-  - [[#common][Common]]
-    - [[#common-h][Common H]]
-    - [[#common-c][Common C]]
-  - [[#multi-color-bitmap][Multi-Color Bitmap]]
-    - [[#multi-color-bitmap-h][Multi-Color Bitmap H]]
-    - [[#multi-color-bitmap-c][Multi-Color Bitmap C]]
+  - [[#shared-common][Common]]
+    - [[#shared-common-common-h][Common H]]
+    - [[#shared-common-common-c][Common C]]
+  - [[#shared-multi-color-bitmap][Multi-Color Bitmap]]
+    - [[#shared-multi-color-bitmap-multi-color-bitmap-h][Multi-Color Bitmap H]]
+    - [[#shared-multi-color-bitmap-multi-color-bitmap-c][Multi-Color Bitmap C]]
 - [[#programs][Programs]]
-  - [[#hello-world][Hello World]]
-    - [[#makefile][Makefile]]
-    - [[#helloworld][helloworld]]
-    - [[#build-and-run][Build and Run]]
-  - [[#system-info][System Info]]
-    - [[#makefile][Makefile]]
-    - [[#systeminfo][systeminfo]]
-    - [[#build-and-run][Build and Run]]
-  - [[#qix-lines][Qix Lines]]
-    - [[#makefile][Makefile]]
-    - [[#qixlines][qixlines]]
-    - [[#build-and-run][Build and Run]]
-  - [[#qix-lines-multi-color][Qix Lines (Multi-Color)]]
-    - [[#makefile][Makefile]]
-    - [[#common][common]]
-    - [[#mcbitmap][mcbitmap]]
-    - [[#qixlinesmc][qixlinesmc]]
-    - [[#build-and-run][Build and Run]]
-- [[#readmeorg][README.org]]
+  - [[#programs-hello-world][Hello World]]
+    - [[#programs-hello-world-makefile][Makefile]]
+    - [[#programs-hello-world-helloworld][helloworld]]
+    - [[#programs-hello-world-build-and-run][Build and Run]]
+  - [[#programs-system-info][System Info]]
+    - [[#programs-system-info-makefile][Makefile]]
+    - [[#programs-system-info-systeminfo][systeminfo]]
+    - [[#programs-system-info-build-and-run][Build and Run]]
+  - [[#programs-qix-lines][Qix Lines]]
+    - [[#programs-qix-lines-makefile][Makefile]]
+    - [[#programs-qix-lines-qixlines][qixlines]]
+    - [[#programs-qix-lines-build-and-run][Build and Run]]
+  - [[#programs-qix-lines-multi-color][Qix Lines (Multi-Color)]]
+    - [[#programs-qix-lines-multi-color-makefile][Makefile]]
+    - [[#programs-qix-lines-multi-color-common][common]]
+    - [[#programs-qix-lines-multi-color-mcbitmap][mcbitmap]]
+    - [[#programs-qix-lines-multi-color-qixlinesmc][qixlinesmc]]
+    - [[#programs-qix-lines-multi-color-build-and-run][Build and Run]]
+- [[#readme-dot-org][README.org]]
 - [[#license][LICENSE]]
   :END:
 
 * Constants
+  :PROPERTIES:
+  :CUSTOM_ID: constants
+  :END:
 
 *** Author
+    :PROPERTIES:
+    :CUSTOM_ID: constants-author
+    :END:
 
     #+NAME: author
     #+BEGIN_SRC org
@@ -61,6 +68,9 @@
     #+END_SRC
 
 *** Copyright
+    :PROPERTIES:
+    :CUSTOM_ID: constants-copyright
+    :END:
 
     #+NAME: year
     #+BEGIN_SRC emacs-lisp
@@ -76,10 +86,13 @@
 
     #+NAME: copyright
     #+BEGIN_SRC org
-      Copyright ©<<year-range()>> <<author>>
+      Copyright © <<year-range()>> <<author>>
     #+END_SRC
 
 *** Header
+    :PROPERTIES:
+    :CUSTOM_ID: constants-header
+    :END:
 
     #+NAME: header
     #+BEGIN_SRC org
@@ -87,9 +100,12 @@
       // BSD 2-Clause License
     #+END_SRC
 
-*** License
+*** License Header
+    :PROPERTIES:
+    :CUSTOM_ID: constants-license-header
+    :END:
 
-    #+NAME: license
+    #+NAME: license-header
     #+BEGIN_SRC conf-unix
       BSD 2-Clause License
 
@@ -120,10 +136,19 @@
     #+END_SRC
 
 * Shared
+  :PROPERTIES:
+  :CUSTOM_ID: shared
+  :END:
 
 *** Common
+    :PROPERTIES:
+    :CUSTOM_ID: shared-common
+    :END:
 
 ***** Common H
+      :PROPERTIES:
+      :CUSTOM_ID: shared-common-common-h
+      :END:
 
       #+NAME: common_h
       #+BEGIN_SRC c
@@ -210,6 +235,9 @@
       #+END_SRC
 
 ***** Common C
+      :PROPERTIES:
+      :CUSTOM_ID: shared-common-common-c
+      :END:
 
       #+NAME: common_c
       #+BEGIN_SRC c
@@ -244,8 +272,14 @@
       #+END_SRC
 
 *** Multi-Color Bitmap
+    :PROPERTIES:
+    :CUSTOM_ID: shared-multi-color-bitmap
+    :END:
 
 ***** Multi-Color Bitmap H
+      :PROPERTIES:
+      :CUSTOM_ID: shared-multi-color-bitmap-multi-color-bitmap-h
+      :END:
 
       #+NAME: mcbitmap_h
       #+BEGIN_SRC c
@@ -268,6 +302,9 @@
       #+END_SRC
 
 ***** Multi-Color Bitmap C
+      :PROPERTIES:
+      :CUSTOM_ID: shared-multi-color-bitmap-multi-color-bitmap-c
+      :END:
 
       #+NAME: mcbitmap_c
       #+BEGIN_SRC c
@@ -405,10 +442,19 @@
       #+END_SRC
 
 * Programs
+  :PROPERTIES:
+  :CUSTOM_ID: programs
+  :END:
 
 *** Hello World
+    :PROPERTIES:
+    :CUSTOM_ID: programs-hello-world
+    :END:
 
 ***** Makefile
+      :PROPERTIES:
+      :CUSTOM_ID: programs-hello-world-makefile
+      :END:
 
       #+BEGIN_SRC makefile :tangle hello-world/Makefile
         .RECIPEPREFIX = >
@@ -427,6 +473,9 @@
       #+END_SRC
 
 ***** helloworld
+      :PROPERTIES:
+      :CUSTOM_ID: programs-hello-world-helloworld
+      :END:
 
       #+BEGIN_SRC c :tangle hello-world/helloworld.c
         /**
@@ -445,6 +494,9 @@
       #+END_SRC
 
 ***** Build and Run
+      :PROPERTIES:
+      :CUSTOM_ID: programs-hello-world-build-and-run
+      :END:
 
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd hello-world
@@ -452,8 +504,14 @@
       #+END_SRC
 
 *** System Info
+    :PROPERTIES:
+    :CUSTOM_ID: programs-system-info
+    :END:
 
 ***** Makefile
+      :PROPERTIES:
+      :CUSTOM_ID: programs-system-info-makefile
+      :END:
 
       #+BEGIN_SRC makefile :tangle system-info/Makefile
         .RECIPEPREFIX = >
@@ -472,6 +530,9 @@
       #+END_SRC
 
 ***** systeminfo
+      :PROPERTIES:
+      :CUSTOM_ID: programs-system-info-systeminfo
+      :END:
 
       #+BEGIN_SRC c :tangle system-info/systeminfo.c
         /**
@@ -506,6 +567,9 @@
       #+END_SRC
 
 ***** Build and Run
+      :PROPERTIES:
+      :CUSTOM_ID: programs-system-info-build-and-run
+      :END:
 
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd system-info
@@ -513,8 +577,14 @@
       #+END_SRC
 
 *** Qix Lines
+    :PROPERTIES:
+    :CUSTOM_ID: programs-qix-lines
+    :END:
 
 ***** Makefile
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-makefile
+      :END:
 
       #+BEGIN_SRC makefile :tangle qix-lines/Makefile
         .RECIPEPREFIX = >
@@ -533,6 +603,9 @@
       #+END_SRC
 
 ***** qixlines
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-qixlines
+      :END:
 
       #+BEGIN_SRC c :tangle qix-lines/qixlines.c
         /**
@@ -718,6 +791,9 @@
       #+END_SRC
 
 ***** Build and Run
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-build-and-run
+      :END:
 
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd qix-lines
@@ -725,8 +801,14 @@
       #+END_SRC
 
 *** +Qix Lines (Multi-Color)+
+    :PROPERTIES:
+    :CUSTOM_ID: programs-qix-lines-multi-color
+    :END:
 
 ***** Makefile
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-multi-color-makefile
+      :END:
 
       #+BEGIN_SRC makefile :tangle qix-lines-multi-color/Makefile
         .RECIPEPREFIX = >
@@ -745,6 +827,9 @@
       #+END_SRC
 
 ***** common
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-multi-color-common
+      :END:
 
       #+BEGIN_SRC c :tangle :tangle qix-lines-multi-color/common.h
         <<common_h>>
@@ -755,6 +840,9 @@
       #+END_SRC
 
 ***** mcbitmap
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-multi-color-mcbitmap
+      :END:
 
       #+BEGIN_SRC c :tangle :tangle qix-lines-multi-color/mcbitmap.h
         <<mcbitmap_h>>
@@ -765,6 +853,9 @@
       #+END_SRC
 
 ***** qixlinesmc
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-multi-color-qixlinesmc
+      :END:
 
       #+BEGIN_SRC c :tangle qix-lines-multi-color/qixlinesmc.c
         /**
@@ -935,19 +1026,25 @@
       #+END_SRC
 
 ***** Build and Run
+      :PROPERTIES:
+      :CUSTOM_ID: programs-qix-lines-multi-color-build-and-run
+      :END:
 
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd qix-lines-multi-color
         make clean && make && x64sc qixlinesmc.prg &
       #+END_SRC
 * README.org
+  :PROPERTIES:
+  :CUSTOM_ID: readme-dot-org
+  :END:
 
   #+BEGIN_SRC org :tangle README.org
-    ,* cc65 Programs for the C64 (c64-cc65)
+    ,* cc65 Programs for the C64
 
-      See the "Build and Run" sections of [[file:c64-cc65.org][c64-cc65.org]] to see how to
-      build, clean, and run these applications using the VICE emulator. In general
-      you follow these steps:
+      See the "Build and Run" sections of [[file:c64-cc65.org][c64-cc65.org]] to
+      see how to build, clean, and run these applications using the VICE emulator.
+      In general you follow these steps:
 
       Build with =make=.
 
@@ -955,8 +1052,8 @@
 
       Run with =x64sc NAME.prg=.
 
-      All files are generated from [[file:c64-cc65.org][c64-cc65.org]]
-      using Emacs' org-mode literate programming system to "tangle" them.
+      All files are generated from [[file:c64-cc65.org][c64-cc65.org]] using
+      Emacs' org-mode literate programming system to "tangle" them.
 
       The example code at [[https://8bitworkshop.com/][8bitworkshop]] was
       instrumental in creating these programs.
@@ -964,10 +1061,33 @@
       <<copyright>>
 
       License: [[file:LICENSE][BSD 2-Clause License]]
+
+    ,*** [[hello-world][Hello World]]
+
+        Just prints "HELLO WORLD!".
+
+    ,*** [[system-info][System Info]]
+
+        Displays some basic system information.
+
+    ,*** [[qix-lines][Qix Lines]]
+
+        Draws lines on the screen like the game Qix.
+
+        ,#+NAME: Qix Lines Video
+        [[file:qix-lines/qixlines.mkv][file:qix-lines/qixlines.gif]]
+
+    ,*** [[qix-lines-multi-color][Qix Lines (Multi Color)]]
+
+        Attempt at a multi-colored version of Qix Lines, but it is both slow and
+        not working ATM.
   #+END_SRC
 
 * LICENSE
+  :PROPERTIES:
+  :CUSTOM_ID: license
+  :END:
 
   #+BEGIN_SRC text :tangle LICENSE
-    <<license>>
+    <<license-header>>
   #+END_SRC
