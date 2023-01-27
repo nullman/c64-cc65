@@ -69,10 +69,10 @@ typedef enum { false, true } bool;      // boolean
 void raster_wait(byte line);
 
 // get current VIC bank start address
-char* get_vic_bank_start();
+char *get_vic_bank_start();
 
 // get current screen memory address
-char* get_screen_memory();
+char *get_screen_memory();
 
 // return key in buffer, or 0 if none (BIOS call)
 char __fastcall__ poll_keyboard();

@@ -4,9 +4,9 @@ CXX = cc65
 CLX = cl65
 CXXFLAGS = -t c64 -O
 
-all: helloworld.prg
+all: helloworld
 
-helloworld.prg:
+helloworld:
 > $(CLX) $(CXXFLAGS) -o helloworld.prg *.c
 
 clean:

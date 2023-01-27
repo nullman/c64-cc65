@@ -9,8 +9,8 @@ void setup_bitmap_multi() {
     SET_VIC_BANK(MCB_BITMAP);
     SET_VIC_BITMAP(MCB_BITMAP);
     SET_VIC_SCREEN(MCB_COLORS);
-    memset((void*) MCB_BITMAP, 0, 0x2000);
-    memset((void*) MCB_COLORS, 0, 0x800);
+    memset((void *)MCB_BITMAP, 0, 0x2000);
+    memset((void *)MCB_COLORS, 0, 0x800);
     memset(COLOR_RAM, 0, 40*25);
 }
 

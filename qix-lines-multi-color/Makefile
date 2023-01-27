@@ -4,9 +4,9 @@ CXX = cc65
 CLX = cl65
 CXXFLAGS = -t c64 -O
 
-all: qixlinesmc.prg
+all: qixlinesmc
 
-qixlinesmc.prg:
+qixlinesmc:
 > $(CLX) $(CXXFLAGS) -o qixlinesmc.prg *.c
 
 clean:

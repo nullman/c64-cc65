@@ -4,9 +4,9 @@ CXX = cc65
 CLX = cl65
 CXXFLAGS = -t c64 -O
 
-all: systeminfo.prg
+all: systeminfo
 
-systeminfo.prg:
+systeminfo:
 > $(CLX) $(CXXFLAGS) -o systeminfo.prg *.c
 
 clean:

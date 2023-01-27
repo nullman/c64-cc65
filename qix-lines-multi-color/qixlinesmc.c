@@ -37,7 +37,7 @@ typedef struct {
 
 int next_degree(int degree) {
     // add randomly to the degree
-    int d = degree + STEP + (int) rand() % (STEP_RANGE * 2 + 1) - STEP_RANGE;
+    int d = degree + STEP + (int)rand() % (STEP_RANGE * 2 + 1) - STEP_RANGE;
     if (d >= MAX_SIN) d = d - MAX_SIN;
     return d;
 }
@@ -50,10 +50,10 @@ void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
     line_degree->y2 = next_degree(line_degree->y2);
 
     // add using sin modified by a delta for each coordinate dimension
-    line->x1 += (int) (((long) line_delta->x1 * _sin(line_degree->x1)) / 256);
-    line->y1 += (int) (((long) line_delta->y1 * _sin(line_degree->y1)) / 256);
-    line->x2 += (int) (((long) line_delta->x2 * _sin(line_degree->x2)) / 256);
-    line->y2 += (int) (((long) line_delta->y2 * _sin(line_degree->y2)) / 256);
+    line->x1 += (int)(((long) line_delta->x1 * _sin(line_degree->x1)) / 256);
+    line->y1 += (int)(((long) line_delta->y1 * _sin(line_degree->y1)) / 256);
+    line->x2 += (int)(((long) line_delta->x2 * _sin(line_degree->x2)) / 256);
+    line->y2 += (int)(((long) line_delta->y2 * _sin(line_degree->y2)) / 256);
 
     // if any coordinates are out of range, reverse their direction and change color
     if (line->x1 < 0) {
@@ -138,7 +138,9 @@ void draw_lines() {
         line_history[history_index++] = line;
         if (history_index >= HISTORY_SIZE) history_index = 0;
     }
-    cgetc();                            // consume key-press
+
+    // consume key-press
+    cgetc();
 }
 
 int main(void) {
