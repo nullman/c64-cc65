@@ -3,12 +3,12 @@
   #+AUTHOR: Kyle W T Sherman
   #+EMAIL: kylewsherman@gmail.com
   #+FILENAME: c64-cc65.org
-  #+DESCRIPTION: Org/Babel 'Literate' Version of C64 Programs
+  #+DESCRIPTION: Org/Babel 'Literate' Version of C64 cc65 Programs
   #+KEYWORDS: emacs, org-mode, babel, c, cc65, commodore 64, c64, programming language, literate programming, reproducible research
   #+LANGUAGE: en
   #+PROPERTY: header-args :tangle no :noweb yes :padline yes :comments no :results silent :dir /tmp :mkdirp yes
   #+STARTUP: noindent odd overview
-  #+TIMESTAMP: <2023-02-07 10:26 (kyle)>
+  #+TIMESTAMP: <2023-07-08 11:29 (kyle)>
 
 * Constants
   :PROPERTIES:
@@ -54,8 +54,8 @@
 
     #+NAME: header
     #+BEGIN_SRC org
-      // <<copyright>>
-      // MIT License
+      <<copyright>>
+      MIT License
     #+END_SRC
 
 *** License Header
@@ -86,7 +86,7 @@
       LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
       OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
       SOFTWARE.
-      #+END_SRC
+    #+END_SRC
 
 * Shared
   :PROPERTIES:
@@ -563,6 +563,8 @@
       #+BEGIN_SRC c :tangle qix-lines/qixlines.c
         /**
          ,* QIX Lines
+         ,*
+         ,* <<header>>
          ,*/
 
         #include <c64.h>
@@ -818,6 +820,8 @@
       #+BEGIN_SRC c :tangle qix-lines-multi-color/qixlinesmc.c
         /**
          ,* QIX Lines (Multi-Color)
+         ,*
+         ,* <<header>>
          ,*/
 
         #include <c64.h>

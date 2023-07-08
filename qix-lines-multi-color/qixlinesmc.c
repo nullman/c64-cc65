@@ -1,5 +1,8 @@
 /**
  * QIX Lines (Multi-Color)
+ *
+ * Copyright © 2023 Kyle W T Sherman
+ * MIT License
  */
 
 #include <c64.h>
