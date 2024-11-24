@@ -16,13 +16,13 @@
   The example code at [[https://8bitworkshop.com/][8bitworkshop]] was
   instrumental in creating these programs.
 
-  Copyright © 2023 Kyle W T Sherman
+  Copyright © 2023-2024 Kyle W T Sherman
 
   License: [[file:LICENSE][MIT License]]
 
 *** [[hello-world][Hello World]]
 
-    Just prints "HELLO WORLD!".
+    Just prints "HELLO, WORLD!".
 
 *** [[system-info][System Info]]
 

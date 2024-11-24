@@ -8,7 +8,7 @@
   #+LANGUAGE: en
   #+PROPERTY: header-args :tangle no :noweb yes :padline yes :comments no :results silent :dir /tmp :mkdirp yes
   #+STARTUP: noindent odd overview
-  #+TIMESTAMP: <2023-07-08 11:29 (kyle)>
+  #+TIMESTAMP: <2024-11-24 11:14 (user)>
 
 * Constants
   :PROPERTIES:
@@ -441,7 +441,7 @@
 
         int main(void) {
             cbm_k_bsout(CH_FONT_UPPER);
-            printf("hello world!\n");
+            printf("hello, world!\n");
             return EXIT_SUCCESS;
         }
       #+END_SRC
@@ -1028,7 +1028,7 @@
 
     ,*** [[hello-world][Hello World]]
 
-        Just prints "HELLO WORLD!".
+        Just prints "HELLO, WORLD!".
 
     ,*** [[system-info][System Info]]
 

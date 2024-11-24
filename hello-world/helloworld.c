@@ -8,6 +8,6 @@
 
 int main(void) {
     cbm_k_bsout(CH_FONT_UPPER);
-    printf("hello world!\n");
+    printf("hello, world!\n");
     return EXIT_SUCCESS;
 }
