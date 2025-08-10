@@ -1,7 +1,7 @@
 /**
  * QIX Lines
  *
- * Copyright © 2023 Kyle W T Sherman
+ * Copyright © 2023-2025 Kyle W T Sherman
  * MIT License
  */
 
@@ -40,7 +40,8 @@ typedef struct {
 static ushort x_size;
 static ushort y_size;
 
-void set_color(const byte color) {
+void set_color(const byte color)
+{
     byte palette[2];
     palette[0] = COLOR_BG;
     palette[1] = color;
@@ -48,14 +49,16 @@ void set_color(const byte color) {
     tgi_setcolor(COLOR_FG);
 }
 
-ushort next_degree(const ushort degree) {
+ushort next_degree(const ushort degree)
+{
     // add randomly to the degree
     ushort d = degree + STEP + (int)rand() % (STEP_RANGE * 2 + 1) - STEP_RANGE;
     if (d >= MAX_SIN) d = d - MAX_SIN;
     return d;
 }
 
-void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
+void next_line(line_s *line, line_s *line_delta, line_s *line_degree)
+{
     // randomly add to the degrees
     line_degree->x1 = next_degree(line_degree->x1);
     line_degree->y1 = next_degree(line_degree->y1);
@@ -112,7 +115,8 @@ void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
 }
 
 // draw lines until a key is pressed
-void draw_lines() {
+void draw_lines()
+{
     line_s line, line_delta, line_degree, line_history[HISTORY_SIZE];
     ushort history_index;
 
@@ -159,7 +163,8 @@ void draw_lines() {
     cgetc();
 }
 
-int main(void) {
+int main(void)
+{
     byte border_color;
 
     // setup tgi

@@ -8,7 +8,7 @@
   #+LANGUAGE: en
   #+PROPERTY: header-args :tangle no :noweb yes :padline yes :comments no :results silent :dir /tmp :mkdirp yes
   #+STARTUP: noindent odd overview
-  #+TIMESTAMP: <2025-08-10 11:15 (user)>
+  #+TIMESTAMP: <2025-08-10 11:32 (user)>
 * Constants
 *** Author
     #+NAME: author
@@ -365,7 +365,8 @@
         #include <stdio.h>
         #include <stdlib.h>
 
-        int main(void) {
+        int main(void)
+        {
             cbm_k_bsout(CH_FONT_UPPER);
             printf("hello, world!\n");
             return EXIT_SUCCESS;
@@ -408,7 +409,8 @@
         #include <stdlib.h>
         #include <tgi.h>
 
-        int main(void) {
+        int main(void)
+        {
             // setup tgi
             tgi_install(tgi_static_stddrv);
             tgi_init();
@@ -490,7 +492,8 @@
         static ushort x_size;
         static ushort y_size;
 
-        void set_color(const byte color) {
+        void set_color(const byte color)
+        {
             byte palette[2];
             palette[0] = COLOR_BG;
             palette[1] = color;
@@ -498,14 +501,16 @@
             tgi_setcolor(COLOR_FG);
         }
 
-        ushort next_degree(const ushort degree) {
+        ushort next_degree(const ushort degree)
+        {
             // add randomly to the degree
             ushort d = degree + STEP + (int)rand() % (STEP_RANGE * 2 + 1) - STEP_RANGE;
             if (d >= MAX_SIN) d = d - MAX_SIN;
             return d;
         }
 
-        void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
+        void next_line(line_s *line, line_s *line_delta, line_s *line_degree)
+        {
             // randomly add to the degrees
             line_degree->x1 = next_degree(line_degree->x1);
             line_degree->y1 = next_degree(line_degree->y1);
@@ -562,7 +567,8 @@
         }
 
         // draw lines until a key is pressed
-        void draw_lines() {
+        void draw_lines()
+        {
             line_s line, line_delta, line_degree, line_history[HISTORY_SIZE];
             ushort history_index;
 
@@ -609,7 +615,8 @@
             cgetc();
         }
 
-        int main(void) {
+        int main(void)
+        {
             byte border_color;
 
             // setup tgi
@@ -716,14 +723,16 @@
             byte color;
         } line_s;
 
-        int next_degree(int degree) {
+        int next_degree(int degree)
+        {
             // add randomly to the degree
             int d = degree + STEP + (int)rand() % (STEP_RANGE * 2 + 1) - STEP_RANGE;
             if (d >= MAX_SIN) d = d - MAX_SIN;
             return d;
         }
 
-        void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
+        void next_line(line_s *line, line_s *line_delta, line_s *line_degree)
+        {
             // randomly add to the degrees
             line_degree->x1 = next_degree(line_degree->x1);
             line_degree->y1 = next_degree(line_degree->y1);
@@ -780,7 +789,8 @@
         }
 
         // draw lines until a key is pressed
-        void draw_lines() {
+        void draw_lines()
+        {
             line_s line, line_delta, line_degree, line_history[HISTORY_SIZE];
             int history_index;
 
@@ -824,7 +834,8 @@
             cgetc();
         }
 
-        int main(void) {
+        int main(void)
+        {
             unsigned char bg_color, border_color;
 
             // setup multi-color bitmap
@@ -902,7 +913,8 @@
         ushort next[LIFE_SIZE];
         ushort life_p, next_p;
 
-        void set_color(const byte color) {
+        void set_color(const byte color)
+        {
             byte palette[2];
             palette[0] = COLOR_BG;
             palette[1] = color;
@@ -910,14 +922,16 @@
             tgi_setcolor(color);
         }
 
-        void set_pixel(const ushort l) {
+        void set_pixel(const ushort l)
+        {
             short x, y;
             x = l % X_SIZE;
             y = l / X_SIZE;
             tgi_setpixel(x, y);
         }
 
-        byte empty_cell(const short x, const short y) {
+        byte empty_cell(const short x, const short y)
+        {
             return (x < 0 || y < 0 || x >= X_SIZE || y >= Y_SIZE ||
                     (tgi_getpixel(x, y) == COLOR_BG));
         }
@@ -926,7 +940,8 @@
         // state is either 0 = off or >0 = on
         // return 1 for life (on and 2 or 3 neighbors, or off and 3 neighbors)
         // otherwise, return 0
-        byte check_life(const byte state, const short x, const short y) {
+        byte check_life(const byte state, const short x, const short y)
+        {
             short xx, yy;
             byte n = 0;
 
@@ -940,13 +955,15 @@
 
         // check for life of a neighbor
         // only check dead cells
-        byte check_neighbor(const short x, const short y) {
+        byte check_neighbor(const short x, const short y)
+        {
             return (x >= 0 && y >= 0 && x < X_SIZE && y < Y_SIZE &&
                     (tgi_getpixel(x, y) == COLOR_BG) && check_life(FALSE, x, y));
         }
 
         // draw life until a key is pressed
-        void draw_life() {
+        void draw_life()
+        {
             byte key, mode;
             ushort i;
             short x, y, xx, yy, l;
@@ -1032,7 +1049,8 @@
             }
         }
 
-        int main(void) {
+        int main(void)
+        {
             byte border_color;
 
             // setup tgi

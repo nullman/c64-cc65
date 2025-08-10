@@ -11,7 +11,8 @@
 #include <stdlib.h>
 #include <tgi.h>
 
-int main(void) {
+int main(void)
+{
     // setup tgi
     tgi_install(tgi_static_stddrv);
     tgi_init();
