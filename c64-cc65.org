@@ -8,28 +8,14 @@
   #+LANGUAGE: en
   #+PROPERTY: header-args :tangle no :noweb yes :padline yes :comments no :results silent :dir /tmp :mkdirp yes
   #+STARTUP: noindent odd overview
-  #+TIMESTAMP: <2024-11-24 11:14 (user)>
-
+  #+TIMESTAMP: <2025-08-09 19:48 (user)>
 * Constants
-  :PROPERTIES:
-  :CUSTOM_ID: constants
-  :END:
-
 *** Author
-    :PROPERTIES:
-    :CUSTOM_ID: constants-author
-    :END:
-
     #+NAME: author
     #+BEGIN_SRC org
       Kyle W T Sherman
     #+END_SRC
-
 *** Copyright
-    :PROPERTIES:
-    :CUSTOM_ID: constants-copyright
-    :END:
-
     #+NAME: year
     #+BEGIN_SRC emacs-lisp
       (format-time-string "%Y" nil t)
@@ -46,23 +32,13 @@
     #+BEGIN_SRC org
       Copyright © <<year-range()>> <<author>>
     #+END_SRC
-
 *** Header
-    :PROPERTIES:
-    :CUSTOM_ID: constants-header
-    :END:
-
     #+NAME: header
     #+BEGIN_SRC org
       <<copyright>>
       MIT License
     #+END_SRC
-
 *** License Header
-    :PROPERTIES:
-    :CUSTOM_ID: constants-license-header
-    :END:
-
     #+NAME: license-header
     #+BEGIN_SRC text
       The MIT License (MIT)
@@ -87,22 +63,9 @@
       OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
       SOFTWARE.
     #+END_SRC
-
 * Shared
-  :PROPERTIES:
-  :CUSTOM_ID: shared
-  :END:
-
 *** Common
-    :PROPERTIES:
-    :CUSTOM_ID: shared-common
-    :END:
-
 ***** Common H
-      :PROPERTIES:
-      :CUSTOM_ID: shared-common-common-h
-      :END:
-
       #+NAME: common_h
       #+BEGIN_SRC c
         // Source: https://8bitworkshop.com/
@@ -186,12 +149,7 @@
 
         #endif
       #+END_SRC
-
 ***** Common C
-      :PROPERTIES:
-      :CUSTOM_ID: shared-common-common-c
-      :END:
-
       #+NAME: common_c
       #+BEGIN_SRC c
         // Source: https://8bitworkshop.com/
@@ -223,17 +181,8 @@
           return __A__;
         }
       #+END_SRC
-
 *** Multi-Color Bitmap
-    :PROPERTIES:
-    :CUSTOM_ID: shared-multi-color-bitmap
-    :END:
-
 ***** Multi-Color Bitmap H
-      :PROPERTIES:
-      :CUSTOM_ID: shared-multi-color-bitmap-multi-color-bitmap-h
-      :END:
-
       #+NAME: mcbitmap_h
       #+BEGIN_SRC c
         // Source: https://8bitworkshop.com/
@@ -253,12 +202,7 @@
 
         byte flood_fill(byte x, byte y, byte color);
       #+END_SRC
-
 ***** Multi-Color Bitmap C
-      :PROPERTIES:
-      :CUSTOM_ID: shared-multi-color-bitmap-multi-color-bitmap-c
-      :END:
-
       #+NAME: mcbitmap_c
       #+BEGIN_SRC c
         // Source: https://8bitworkshop.com/
@@ -393,22 +337,9 @@
         }
         #pragma static-locals(pop)
       #+END_SRC
-
 * Programs
-  :PROPERTIES:
-  :CUSTOM_ID: programs
-  :END:
-
 *** Hello World
-    :PROPERTIES:
-    :CUSTOM_ID: programs-hello-world
-    :END:
-
 ***** Makefile
-      :PROPERTIES:
-      :CUSTOM_ID: programs-hello-world-makefile
-      :END:
-
       #+BEGIN_SRC makefile :tangle hello-world/Makefile
         .RECIPEPREFIX = >
 
@@ -424,12 +355,7 @@
         clean:
         > rm -f *.prg *.inc *.o
       #+END_SRC
-
 ***** helloworld
-      :PROPERTIES:
-      :CUSTOM_ID: programs-hello-world-helloworld
-      :END:
-
       #+BEGIN_SRC c :tangle hello-world/helloworld.c
         /**
          ,* Hello World
@@ -445,27 +371,13 @@
             return EXIT_SUCCESS;
         }
       #+END_SRC
-
 ***** Build and Run
-      :PROPERTIES:
-      :CUSTOM_ID: programs-hello-world-build-and-run
-      :END:
-
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd hello-world
         make clean && make && x64sc helloworld.prg &
       #+END_SRC
-
 *** System Info
-    :PROPERTIES:
-    :CUSTOM_ID: programs-system-info
-    :END:
-
 ***** Makefile
-      :PROPERTIES:
-      :CUSTOM_ID: programs-system-info-makefile
-      :END:
-
       #+BEGIN_SRC makefile :tangle system-info/Makefile
         .RECIPEPREFIX = >
 
@@ -481,12 +393,7 @@
         clean:
         > rm -f *.prg *.inc *.o
       #+END_SRC
-
 ***** systeminfo
-      :PROPERTIES:
-      :CUSTOM_ID: programs-system-info-systeminfo
-      :END:
-
       #+BEGIN_SRC c :tangle system-info/systeminfo.c
         /**
          ,* System Info
@@ -518,27 +425,13 @@
             return EXIT_SUCCESS;
         }
       #+END_SRC
-
 ***** Build and Run
-      :PROPERTIES:
-      :CUSTOM_ID: programs-system-info-build-and-run
-      :END:
-
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd system-info
         make clean && make && x64sc systeminfo.prg &
       #+END_SRC
-
 *** Qix Lines
-    :PROPERTIES:
-    :CUSTOM_ID: programs-qix-lines
-    :END:
-
 ***** Makefile
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-makefile
-      :END:
-
       #+BEGIN_SRC makefile :tangle qix-lines/Makefile
         .RECIPEPREFIX = >
 
@@ -554,12 +447,7 @@
         clean:
         > rm -f *.prg *.inc *.o
       #+END_SRC
-
 ***** qixlines
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-qixlines
-      :END:
-
       #+BEGIN_SRC c :tangle qix-lines/qixlines.c
         /**
          ,* QIX Lines
@@ -749,27 +637,13 @@
             return EXIT_SUCCESS;
         }
       #+END_SRC
-
 ***** Build and Run
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-build-and-run
-      :END:
-
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd qix-lines
         make clean && make && x64sc qixlines.prg &
       #+END_SRC
-
 *** +Qix Lines (Multi-Color)+
-    :PROPERTIES:
-    :CUSTOM_ID: programs-qix-lines-multi-color
-    :END:
-
 ***** Makefile
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-multi-color-makefile
-      :END:
-
       #+BEGIN_SRC makefile :tangle qix-lines-multi-color/Makefile
         .RECIPEPREFIX = >
 
@@ -785,12 +659,7 @@
         clean:
         > rm -f *.prg *.inc *.o
       #+END_SRC
-
 ***** common
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-multi-color-common
-      :END:
-
       #+BEGIN_SRC c :tangle :tangle qix-lines-multi-color/common.h
         <<common_h>>
       #+END_SRC
@@ -798,12 +667,7 @@
       #+BEGIN_SRC c :tangle :tangle qix-lines-multi-color/common.c
         <<common_c>>
       #+END_SRC
-
 ***** mcbitmap
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-multi-color-mcbitmap
-      :END:
-
       #+BEGIN_SRC c :tangle :tangle qix-lines-multi-color/mcbitmap.h
         <<mcbitmap_h>>
       #+END_SRC
@@ -811,12 +675,7 @@
       #+BEGIN_SRC c :tangle :tangle qix-lines-multi-color/mcbitmap.c
         <<mcbitmap_c>>
       #+END_SRC
-
 ***** qixlinesmc
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-multi-color-qixlinesmc
-      :END:
-
       #+BEGIN_SRC c :tangle qix-lines-multi-color/qixlinesmc.c
         /**
          ,* QIX Lines (Multi-Color)
@@ -988,21 +847,17 @@
             return EXIT_SUCCESS;
         }
       #+END_SRC
-
 ***** Build and Run
-      :PROPERTIES:
-      :CUSTOM_ID: programs-qix-lines-multi-color-build-and-run
-      :END:
-
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd qix-lines-multi-color
         make clean && make && x64sc qixlinesmc.prg &
       #+END_SRC
-* README.org
-  :PROPERTIES:
-  :CUSTOM_ID: readme-dot-org
-  :END:
+* .gitignore
 
+  #+BEGIN_SRC conf-unix :tangle .gitignore
+    ,*\.o
+  #+END_SRC
+* README.org
   #+BEGIN_SRC org :tangle README.org
     ,* cc65 Programs for the C64
 
@@ -1046,12 +901,7 @@
         Attempt at a multi-colored version of Qix Lines, but it is both slow and
         not working ATM.
   #+END_SRC
-
 * LICENSE
-  :PROPERTIES:
-  :CUSTOM_ID: license
-  :END:
-
   #+BEGIN_SRC text :tangle LICENSE
     <<license-header>>
   #+END_SRC
