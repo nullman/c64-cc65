@@ -8,7 +8,7 @@
   #+LANGUAGE: en
   #+PROPERTY: header-args :tangle no :noweb yes :padline yes :comments no :results silent :dir /tmp :mkdirp yes
   #+STARTUP: noindent odd overview
-  #+TIMESTAMP: <2025-08-10 11:32 (user)>
+  #+TIMESTAMP: <2025-08-16 11:20 (user)>
 * Constants
 *** Author
     #+NAME: author
@@ -432,6 +432,209 @@
         cd system-info
         make clean && make && x64sc systeminfo.prg &
       #+END_SRC
+*** Bit Array
+***** Makefile
+      #+BEGIN_SRC makefile :tangle bit-array/Makefile
+        .RECIPEPREFIX = >
+
+        CXX = cc65
+        CLX = cl65
+        CXXFLAGS = -t c64 -O
+
+        all: bitarray
+
+        bitarray:
+        > $(CLX) $(CXXFLAGS) -o bitarray.prg *.c
+
+        clean:
+        > rm -f *.prg *.inc *.o
+      #+END_SRC
+***** bitarray
+      #+BEGIN_SRC c :tangle bit-array/bitarray.c
+        /**
+         ,* Bit Array
+         ,*/
+
+        #include <cbm.h>
+        #include <stdio.h>
+        #include <stdlib.h>
+
+        #define TRUE       1
+        #define FALSE      0
+        #define X_SIZE     320
+        #define Y_SIZE     200
+        #define ARRAY_SIZE (X_SIZE * Y_SIZE)    // 64000
+
+        typedef unsigned char bool;
+        typedef unsigned char byte;
+        typedef unsigned short ushort;
+
+        // globals
+        byte array[ARRAY_SIZE / 8];
+
+        void set_bit_pos(const ushort pos, const bool val)
+        {
+            if (val == TRUE)
+                array[pos / 8] |= 1 << (pos % 8);
+            else
+                array[pos / 8] &= ~(1 << (pos % 8));
+        }
+
+        void set_bit_xy(const short x, const short y, const bool val)
+        {
+            ushort pos = y * X_SIZE + x;
+
+            set_bit_pos(pos, val);
+        }
+
+        bool get_bit_pos(const ushort pos)
+        {
+            return (((array[pos / 8] & (1 << (pos % 8))) == 0) ? 0 : 1);
+        }
+
+        bool get_bit_xy(const short x, const short y)
+        {
+            ushort pos = y * X_SIZE + x;
+
+            return get_bit_pos(pos);
+        }
+
+        void bit_test()
+        {
+            byte b;
+
+            printf("\nbit test\n\n");
+
+            b = 0;
+            printf("add even bits: %d", b);
+            b |= 1 << 2;
+            printf(" -> %d", b);
+            b |= 1 << 4;
+            printf(" -> %d", b);
+            b |= 1 << 6;
+            printf(" -> %d\n", b);
+            printf("remove even bits: %d", b);
+            b &= ~(1 << 2);
+            printf(" -> %d", b);
+            b &= ~(1 << 4);
+            printf(" -> %d", b);
+            b &= ~(1 << 6);
+            printf(" -> %d\n", b);
+        }
+
+        void bit_array_test()
+        {
+            ushort p;
+            short x, y;
+
+            printf("\nbit array test\n\n");
+
+            p = 14405;
+            set_bit_pos(p, TRUE);
+            if (get_bit_pos(p) != TRUE)
+                printf("error: ");
+            printf("pos: %5u, set: %d, get: %d\n", p, TRUE, get_bit_pos(p));
+            set_bit_pos(p, FALSE);
+            if (get_bit_pos(p) != FALSE)
+                printf("error: ");
+            printf("pos: %5u, set: %d, get: %d\n", p, FALSE, get_bit_pos(p));
+
+            p = 60810;
+            set_bit_pos(p, TRUE);
+            if (get_bit_pos(p) != TRUE)
+                printf("error: ");
+            printf("pos: %5u, set: %d, get: %d\n", p, TRUE, get_bit_pos(p));
+            set_bit_pos(p, FALSE);
+            if (get_bit_pos(p) != FALSE)
+                printf("error: ");
+            printf("pos: %5u, set: %d, get: %d\n", p, FALSE, get_bit_pos(p));
+
+            x = 10;
+            y = 90;
+            set_bit_xy(x, y, TRUE);
+            if (get_bit_xy(x, y) != TRUE)
+                printf("error: ");
+            printf("x,y: %3d,%3d, set: %d, get: %d\n", x, y, TRUE, get_bit_xy(x, y));
+            set_bit_xy(x, y, FALSE);
+            if (get_bit_xy(x, y) != FALSE)
+                printf("error: ");
+            printf("x,y: %3d,%3d, set: %d, get: %d\n", x, y, FALSE, get_bit_xy(x, y));
+
+            x = 10;
+            y = 190;
+            set_bit_xy(x, y, TRUE);
+            if (get_bit_xy(x, y) != TRUE)
+                printf("error: ");
+            printf("x,y: %3d,%3d, set: %d, get: %d\n", x, y, TRUE, get_bit_xy(x, y));
+            set_bit_xy(x, y, FALSE);
+            if (get_bit_xy(x, y) != FALSE)
+                printf("error: ");
+            printf("x,y: %3d,%3d, set: %d, get: %d\n", x, y, FALSE, get_bit_xy(x, y));
+        }
+
+        bit_array_test_pos()
+        {
+            ushort p;
+
+            printf("\nbit array test: pos\n\n");
+
+            for (p = 0; p < ARRAY_SIZE; p += 1000) {
+                set_bit_pos(p, TRUE);
+                if (get_bit_pos(p) != TRUE)
+                    printf("error: ");
+                printf("pos: %5u, set: %d, get: %d\n", p, TRUE, get_bit_pos(p));
+            }
+
+            for (p = 0; p < ARRAY_SIZE; p += 1000) {
+                set_bit_pos(p, FALSE);
+                if (get_bit_pos(p) != FALSE)
+                    printf("error: ");
+                printf("pos: %5u, set: %d, get: %d\n", p, FALSE, get_bit_pos(p));
+            }
+        }
+
+        bit_array_test_xy()
+        {
+            short x, y;
+
+            printf("\nbit array test: xy\n\n");
+
+            for (y = 0; y < Y_SIZE; y += 10) {
+                for (x = 0; x < X_SIZE; x += 120) {
+                    set_bit_xy(x, y, TRUE);
+                    if (get_bit_xy(x, y) != TRUE)
+                        printf("error: ");
+                    printf("x,y: %3d,%3d, set: %d, get: %d\n", x, y, TRUE, get_bit_xy(x, y));
+                }
+            }
+
+            for (y = 0; y < Y_SIZE; y += 10) {
+                for (x = 0; x < X_SIZE; x += 120) {
+                    set_bit_xy(x, y, FALSE);
+                    if (get_bit_xy(x, y) != FALSE)
+                        printf("error: ");
+                    printf("x,y: %3d,%3d, set: %d, get: %d\n", x, y, FALSE, get_bit_xy(x, y));
+                }
+            }
+        }
+
+        int main(void)
+        {
+            cbm_k_bsout(CH_FONT_UPPER);
+
+            bit_test();
+            bit_array_test();
+            bit_array_test_pos();
+            bit_array_test_xy();
+
+            return EXIT_SUCCESS;
+        }
+      #+END_SRC
+***** Build and Run
+      #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
+        cd bit-array
+        make clean && make && x64sc bitarray.prg &
+      #+END_SRC
 *** Qix Lines
 ***** Makefile
       #+BEGIN_SRC makefile :tangle qix-lines/Makefile
@@ -466,13 +669,13 @@
         #include <stdlib.h>
         #include <tgi.h>
 
-        #define MAX_COLORS 16
-        #define COLOR_BG TGI_COLOR_BLACK
-        #define COLOR_FG TGI_COLOR_WHITE
-        #define MAX_SIN 180
+        #define MAX_COLORS   16
+        #define COLOR_BG     TGI_COLOR_BLACK
+        #define COLOR_FG     TGI_COLOR_WHITE
+        #define MAX_SIN      180
         #define HISTORY_SIZE 10                 // how many lines to display at once
-        #define STEP 8                          // line spacing
-        #define STEP_RANGE 6                    // spacing plus/minus range
+        #define STEP         8                  // line spacing
+        #define STEP_RANGE   6                  // spacing plus/minus range
 
         // use all colors except black (0)
         #define RANDOM_COLOR() (rand() % (MAX_COLORS - 1) + 1)
@@ -701,15 +904,15 @@
 
         #include "mcbitmap.h"
 
-        #define X_SIZE 160
-        #define Y_SIZE 192
-        #define MAX_COLORS 16
-        #define COLOR_BG TGI_COLOR_BLACK
-        #define MAX_SIN 180
+        #define X_SIZE       160
+        #define Y_SIZE       192
+        #define MAX_COLORS   16
+        #define COLOR_BG     TGI_COLOR_BLACK
+        #define MAX_SIN      180
         #define HISTORY_SIZE 10                 // how many lines to display at once
-        #define STEP 10                         // line spacing
-        #define STEP_RANGE 9                    // spacing plus/minus range
-        #define QIX_COUNT 3                     // number of qixs to display
+        #define STEP         10                 // line spacing
+        #define STEP_RANGE   9                  // spacing plus/minus range
+        #define QIX_COUNT    3                  // number of qixs to display
 
         // use all colors except black (0)
         #define RANDOM_COLOR() (rand() % (MAX_COLORS - 1) + 1)
@@ -897,37 +1100,52 @@
         #include <stdlib.h>
         #include <tgi.h>
 
-        #define TRUE 1
-        #define FALSE 0
-        #define COLOR_BG TGI_COLOR_BLACK
-        #define COLOR_FG TGI_COLOR_WHITE
-        #define X_SIZE 320
-        #define Y_SIZE 200
-        #define LIFE_SIZE 1000
+        #define TRUE      1
+        #define FALSE     0
+        #define COLOR_BG  TGI_COLOR_BLACK
+        #define COLOR_FG  TGI_COLOR_WHITE
+        #define X_SIZE    320
+        #define Y_SIZE    200
+        #define CELL_SIZE 1000
+        #define GRID_SIZE (X_SIZE * Y_SIZE)
 
+        // predefined cell types
+        #define CT_RANDOM    0
+        #define CT_GLIDER_NW 1
+        #define CT_GLIDER_NE 2
+        #define CT_GLIDER_SW 3
+        #define CT_GLIDER_SE 4
+
+        typedef unsigned char bool;
         typedef unsigned char byte;
         typedef unsigned short ushort;
 
         // globals
-        ushort life[LIFE_SIZE];
-        ushort next[LIFE_SIZE];
-        ushort life_p, next_p;
+        byte work[GRID_SIZE / 8];
+        ushort cell[CELL_SIZE];
+        ushort next[CELL_SIZE];
+        ushort cell_p, next_p;
 
-        void set_color(const byte color)
+        void set_work_bit(const short x, const short y, const bool val)
         {
-            byte palette[2];
-            palette[0] = COLOR_BG;
-            palette[1] = color;
-            tgi_setpalette(palette);
-            tgi_setcolor(color);
+            ushort pos = y * X_SIZE + x;
+
+            if (x >= 0 && y >= 0 && x < X_SIZE && y < Y_SIZE) {
+                if (val)
+                    work[pos / 8] |= 1 << (pos % 8);
+                else
+                    work[pos / 8] &= ~(1 << (pos % 8));
+            }
         }
 
-        void set_pixel(const ushort l)
+        bool get_work_bit(const short x, const short y)
         {
-            short x, y;
-            x = l % X_SIZE;
-            y = l / X_SIZE;
-            tgi_setpixel(x, y);
+            ushort pos = y * X_SIZE + x;
+
+            if (x >= 0 && y >= 0 && x < X_SIZE && y < Y_SIZE)
+                return (((work[pos / 8] & (1 << (pos % 8))) == 0) ? 0 : 1);
+            else
+                return 0;
         }
 
         byte empty_cell(const short x, const short y)
@@ -936,11 +1154,11 @@
                     (tgi_getpixel(x, y) == COLOR_BG));
         }
 
-        // check for life (by counting neighbors)
+        // check cell for life (by counting neighbors)
         // state is either 0 = off or >0 = on
         // return 1 for life (on and 2 or 3 neighbors, or off and 3 neighbors)
         // otherwise, return 0
-        byte check_life(const byte state, const short x, const short y)
+        byte check_cell(const short x, const short y, const byte state)
         {
             short xx, yy;
             byte n = 0;
@@ -949,57 +1167,121 @@
                 for (yy = y - 1; yy <= y + 1; yy++)
                     if ((xx != x || yy != y) && !empty_cell(xx, yy))
                         n++;
-
             return (n == 3 || (n == 2 && state));
         }
 
-        // check for life of a neighbor
+        // check for cell life of a neighbor
         // only check dead cells
         byte check_neighbor(const short x, const short y)
         {
             return (x >= 0 && y >= 0 && x < X_SIZE && y < Y_SIZE &&
-                    (tgi_getpixel(x, y) == COLOR_BG) && check_life(FALSE, x, y));
+                    (tgi_getpixel(x, y) == COLOR_BG) && check_cell(x, y, FALSE));
         }
 
-        // draw life until a key is pressed
-        void draw_life()
+        void clear_cells()
         {
-            byte key, mode;
             ushort i;
-            short x, y, xx, yy, l;
-            short x_mid, y_mid;
 
-            life_p = 0;
-            x_mid = X_SIZE / 2;
-            y_mid = Y_SIZE / 2;
+            tgi_setcolor(COLOR_BG);
+            for (i = 0; i < cell_p; i++)
+                tgi_setpixel(cell[i] % X_SIZE, cell[i] / X_SIZE);
+        }
 
-            // randomize initial state
-            for (y = y_mid - 10; y < y_mid + 10; y++) {
-                for (x = x_mid - 10; x < x_mid + 10; x++) {
+        void draw_next_cells()
+        {
+            ushort i;
+
+            tgi_setcolor(COLOR_FG);
+            for (i = 0; i < next_p; i++) {
+                tgi_setpixel(next[i] % X_SIZE, next[i] / X_SIZE);
+                cell[i] = next[i];
+            }
+            cell_p = next_p;
+        }
+
+        void add_cell(short x, short y)
+        {
+            ushort pos = y * X_SIZE + x;
+
+            cell[cell_p++] = pos;
+            tgi_setpixel(x, y);
+        }
+
+        void add_random(short x, short y)
+        {
+            ushort xx, yy;
+
+            x = (x < 10) ? 10 : (x >= X_SIZE - 10) ? X_SIZE - 11 : x;
+            y = (y < 10) ? 10 : (y >= Y_SIZE - 10) ? (Y_SIZE - 11) : y;
+            for (yy = y - 10; yy < y + 10; yy++) {
+                for (xx = x - 10; xx < x + 10; xx++) {
                     if ((rand() % 2) == 0) {
-                        life[life_p++] = y * X_SIZE + x;
-                        tgi_setpixel(x, y);
+                        add_cell(xx, yy);
                     }
                 }
             }
+        }
 
-            /* // glider test */
-            /* life[life_p++] = 1 * X_SIZE + 2; */
-            /* tgi_setpixel(2, 1); */
-            /* life[life_p++] = 2 * X_SIZE + 3; */
-            /* tgi_setpixel(3, 2); */
-            /* life[life_p++] = 3 * X_SIZE + 1; */
-            /* tgi_setpixel(1, 3); */
-            /* life[life_p++] = 3 * X_SIZE + 2; */
-            /* tgi_setpixel(2, 3); */
-            /* life[life_p++] = 3 * X_SIZE + 3; */
-            /* tgi_setpixel(3, 3); */
+        void add_glider(short x, short y, byte dir)
+        {
+            x = (x < 1) ? 1 : (x >= X_SIZE - 1) ? X_SIZE - 2 : x;
+            y = (y < 1) ? 1 : (y >= Y_SIZE - 1) ? Y_SIZE - 2 : y;
+            add_cell(x, y - 1);
+            add_cell(x + 1, y);
+            add_cell(x - 1, y + 1);
+            add_cell(x, y + 1);
+            add_cell(x + 1, y + 1);
+        }
+
+        void add_shape(const byte type, const short x, const short y)
+        {
+            ushort xx, yy;
+
+            xx = x;
+            yy = y;
+
+            switch (type) {
+                case CT_RANDOM:
+                    add_random(xx, yy);
+                    break;
+                case CT_GLIDER_NW:
+                    add_glider(xx, yy, CT_GLIDER_NW);
+                    break;
+                case CT_GLIDER_NE:
+                    add_glider(xx, yy, CT_GLIDER_NE);
+                    break;
+                case CT_GLIDER_SW:
+                    add_glider(xx, yy, CT_GLIDER_SW);
+                    break;
+                case CT_GLIDER_SE:
+                    add_glider(xx, yy, CT_GLIDER_SE);
+                    break;
+            }
+        }
+
+        // draw cells in a loop, controlled by key presses
+        void draw_loop()
+        {
+            byte key, key1, key2, mode;
+            ushort i, pos;
+            short x, y, xx, yy, cx, cy;
+
+            cell_p = 0;
+            cx = X_SIZE / 2;
+            cy = Y_SIZE / 2;
+
+            // randomize initial state
+            //add_shape(CT_RANDOM, cx, cy);
+            add_shape(CT_GLIDER_SE, cx, cy);
 
             // mode 0: exit
             // mode 1: pause until key-press
             // mode 2: run continuously
             mode = 1;
+            key1 = key2 = 0;
             while (mode > 0) {
+                tgi_setcolor(COLOR_FG);
+
                 if (kbhit())
                     key = cgetc();
 
@@ -1007,45 +1289,73 @@
                     case 'q':
                         mode = 0;
                         break;
-                    case 'c':
+                    case 's':
                         if (mode == 1) mode = 2;
                         else mode = 1;
                         break;
+                    case 'c':
+                        clear_cells();
+                        cell_p = 0;
+                        break;
+                }
+
+                if (key >= '0' && key <= '9') {
+                    if (key1 == 0)
+                        key1 = key;
+                    else
+                        key2 = key;
+
+                    if (key2 == 'q')
+                        mode = 0;
+                    else if (key2 > 0) {
+                        add_shape((key1 - '0') * 10 + key2 - '0', cx, cy);
+                        key1 = key2 = 0;
+                    }
                 }
 
                 if (mode == 2 || key == ' ') {
-                    set_color(COLOR_FG);
                     next_p = 0;
-                    for (i = 0; i < life_p; i++) {
-                        l = life[i];
-                        x = l % X_SIZE;
-                        y = l / X_SIZE;
 
-                        // if life, add to next
-                        if (check_life(TRUE, x, y))
-                            next[next_p++] = l;
+                    // process cells
+                    for (i = 0; i < cell_p; i++) {
+                        pos = cell[i];
+                        x = pos % X_SIZE;
+                        y = pos / X_SIZE;
 
+                        // add all neighbors to work
+                        for (xx = x - 1; xx <= x + 1; xx++)
+                            for (yy = y - 1; yy <= y + 1; yy++) {
+                                set_work_bit(xx, yy, TRUE);
+                            }
+
+                        // if cell is still alive, add to next
+                        if (check_cell(x, y, TRUE))
+                            next[next_p++] = pos;
+                    }
+
+                    // process cell neighbors
+                    for (i = 0; i < cell_p; i++) {
+                        pos = cell[i];
+                        x = pos % X_SIZE;
+                        y = pos / X_SIZE;
                         // check neighbor cells for life and add to next as appropriate
                         for (xx = x - 1; xx <= x + 1; xx++)
-                            for (yy = y - 1; yy <= y + 1; yy++)
-                                if (xx != x && yy != y && check_neighbor(xx, yy))
+                            for (yy = y - 1; yy <= y + 1; yy++) {
+                                if (get_work_bit(xx, yy) && check_neighbor(xx, yy))
                                     next[next_p++] = yy * X_SIZE + xx;
+                                set_work_bit(xx, yy, FALSE);
+                            }
                     }
 
                     // remove dead cells from screen
-                    set_color(COLOR_BG);
-                    for (i = 0; i < life_p; i++)
-                        set_pixel(life[i]);
+                    clear_cells();
 
-                    // add live cells to screen
-                    // and copy next array to life array
-                    set_color(COLOR_FG);
-                    for (i = 0; i < next_p; i++) {
-                        set_pixel(next[i]);
-                        life[i] = next[i];
-                    }
-                    life_p = next_p;
+                    // draw life cells to screen
+                    // and copy next array to cell array
+                    draw_next_cells();
                 }
+
+                key = 0;
             }
         }
 
@@ -1062,7 +1372,7 @@
             border_color = bordercolor(COLOR_BG);
 
             // main loop
-            draw_life();
+            draw_loop();
 
             // restore border color
             bordercolor(border_color);
@@ -1077,6 +1387,7 @@
 ***** Build and Run
       #+BEGIN_SRC sh :dir (file-name-directory buffer-file-name)
         cd life
+
         make clean && make && x64sc life.prg &
       #+END_SRC
 * .gitignore

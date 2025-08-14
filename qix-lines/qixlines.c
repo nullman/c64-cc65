@@ -14,13 +14,13 @@
 #include <stdlib.h>
 #include <tgi.h>
 
-#define MAX_COLORS 16
-#define COLOR_BG TGI_COLOR_BLACK
-#define COLOR_FG TGI_COLOR_WHITE
-#define MAX_SIN 180
+#define MAX_COLORS   16
+#define COLOR_BG     TGI_COLOR_BLACK
+#define COLOR_FG     TGI_COLOR_WHITE
+#define MAX_SIN      180
 #define HISTORY_SIZE 10                 // how many lines to display at once
-#define STEP 8                          // line spacing
-#define STEP_RANGE 6                    // spacing plus/minus range
+#define STEP         8                  // line spacing
+#define STEP_RANGE   6                  // spacing plus/minus range
 
 // use all colors except black (0)
 #define RANDOM_COLOR() (rand() % (MAX_COLORS - 1) + 1)

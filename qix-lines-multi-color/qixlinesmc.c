@@ -1,7 +1,7 @@
 /**
  * QIX Lines (Multi-Color)
  *
- * Copyright © 2023 Kyle W T Sherman
+ * Copyright © 2023-2025 Kyle W T Sherman
  * MIT License
  */
 
@@ -16,15 +16,15 @@
 
 #include "mcbitmap.h"
 
-#define X_SIZE 160
-#define Y_SIZE 192
-#define MAX_COLORS 16
-#define COLOR_BG TGI_COLOR_BLACK
-#define MAX_SIN 180
+#define X_SIZE       160
+#define Y_SIZE       192
+#define MAX_COLORS   16
+#define COLOR_BG     TGI_COLOR_BLACK
+#define MAX_SIN      180
 #define HISTORY_SIZE 10                 // how many lines to display at once
-#define STEP 10                         // line spacing
-#define STEP_RANGE 9                    // spacing plus/minus range
-#define QIX_COUNT 3                     // number of qixs to display
+#define STEP         10                 // line spacing
+#define STEP_RANGE   9                  // spacing plus/minus range
+#define QIX_COUNT    3                  // number of qixs to display
 
 // use all colors except black (0)
 #define RANDOM_COLOR() (rand() % (MAX_COLORS - 1) + 1)
@@ -38,14 +38,16 @@ typedef struct {
     byte color;
 } line_s;
 
-int next_degree(int degree) {
+int next_degree(int degree)
+{
     // add randomly to the degree
     int d = degree + STEP + (int)rand() % (STEP_RANGE * 2 + 1) - STEP_RANGE;
     if (d >= MAX_SIN) d = d - MAX_SIN;
     return d;
 }
 
-void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
+void next_line(line_s *line, line_s *line_delta, line_s *line_degree)
+{
     // randomly add to the degrees
     line_degree->x1 = next_degree(line_degree->x1);
     line_degree->y1 = next_degree(line_degree->y1);
@@ -102,7 +104,8 @@ void next_line(line_s *line, line_s *line_delta, line_s *line_degree) {
 }
 
 // draw lines until a key is pressed
-void draw_lines() {
+void draw_lines()
+{
     line_s line, line_delta, line_degree, line_history[HISTORY_SIZE];
     int history_index;
 
@@ -146,7 +149,8 @@ void draw_lines() {
     cgetc();
 }
 
-int main(void) {
+int main(void)
+{
     unsigned char bg_color, border_color;
 
     // setup multi-color bitmap
