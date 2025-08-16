@@ -27,8 +27,8 @@
 #define CT_RANDOM    0
 #define CT_GLIDER_NW 1
 #define CT_GLIDER_NE 2
-#define CT_GLIDER_SW 3
-#define CT_GLIDER_SE 4
+#define CT_GLIDER_SE 3
+#define CT_GLIDER_SW 4
 
 typedef unsigned char bool;
 typedef unsigned char byte;
@@ -117,8 +117,19 @@ void add_cell(short x, short y)
 {
     ushort pos = y * X_SIZE + x;
 
-    cell[cell_p++] = pos;
-    tgi_setpixel(x, y);
+    if (cell_p < CELL_SIZE - 1) {
+        cell[cell_p++] = pos;
+        tgi_setpixel(x, y);
+    }
+}
+
+void add_next(short x, short y)
+{
+    ushort pos = y * X_SIZE + x;
+
+    if (next_p < CELL_SIZE - 1) {
+        next[next_p++] = pos;
+    }
 }
 
 void add_random(short x, short y)
@@ -140,11 +151,36 @@ void add_glider(short x, short y, byte dir)
 {
     x = (x < 1) ? 1 : (x >= X_SIZE - 1) ? X_SIZE - 2 : x;
     y = (y < 1) ? 1 : (y >= Y_SIZE - 1) ? Y_SIZE - 2 : y;
-    add_cell(x, y - 1);
-    add_cell(x + 1, y);
-    add_cell(x - 1, y + 1);
-    add_cell(x, y + 1);
-    add_cell(x + 1, y + 1);
+    switch (dir) {
+        case CT_GLIDER_NW:
+            add_cell(x - 1, y - 1);
+            add_cell(x - 1, y);
+            add_cell(x, y - 1);
+            add_cell(x, y + 1);
+            add_cell(x + 1, y - 1);
+            break;
+        case CT_GLIDER_NE:
+            add_cell(x - 1, y);
+            add_cell(x, y - 1);
+            add_cell(x + 1, y - 1);
+            add_cell(x + 1, y);
+            add_cell(x + 1, y + 1);
+            break;
+        case CT_GLIDER_SE:
+            add_cell(x - 1, y + 1);
+            add_cell(x, y - 1);
+            add_cell(x, y + 1);
+            add_cell(x + 1, y);
+            add_cell(x + 1, y + 1);
+            break;
+        case CT_GLIDER_SW:
+            add_cell(x - 1, y - 1);
+            add_cell(x - 1, y);
+            add_cell(x - 1, y + 1);
+            add_cell(x, y + 1);
+            add_cell(x + 1, y);
+            break;
+    }
 }
 
 void add_shape(const byte type, const short x, const short y)
@@ -164,11 +200,11 @@ void add_shape(const byte type, const short x, const short y)
         case CT_GLIDER_NE:
             add_glider(xx, yy, CT_GLIDER_NE);
             break;
-        case CT_GLIDER_SW:
-            add_glider(xx, yy, CT_GLIDER_SW);
-            break;
         case CT_GLIDER_SE:
             add_glider(xx, yy, CT_GLIDER_SE);
+            break;
+        case CT_GLIDER_SW:
+            add_glider(xx, yy, CT_GLIDER_SW);
             break;
     }
 }
@@ -244,7 +280,7 @@ void draw_loop()
 
                 // if cell is still alive, add to next
                 if (check_cell(x, y, TRUE))
-                    next[next_p++] = pos;
+                    add_next(x, y);
             }
 
             // process cell neighbors
@@ -256,7 +292,7 @@ void draw_loop()
                 for (xx = x - 1; xx <= x + 1; xx++)
                     for (yy = y - 1; yy <= y + 1; yy++) {
                         if (get_work_bit(xx, yy) && check_neighbor(xx, yy))
-                            next[next_p++] = yy * X_SIZE + xx;
+                            add_next(xx, yy);
                         set_work_bit(xx, yy, FALSE);
                     }
             }
